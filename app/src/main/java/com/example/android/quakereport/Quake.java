@@ -31,19 +31,19 @@ public class Quake {
     private String mQuakeLocation;
 
     // Date of quake (e.g. Feb 2, 2013; Jan 1, 2014; etc.)
-    private String mQuakeDate;
+    private long mQuakeTimeInMillisecs;
 
     /**
     * Create a new Quake object (Constructor).
     *
     * @param vQuakeMagnitude is the quake magnitude on the Richter scale (e.g. 4.2, 4.4, 7.2, etc.)
     * @param vQuakeLocation is the place of quake (e.g. San Francisco, Auckland, etc.)
-    * @param vQuakeDate is the date of quake (e.g. Feb 2, 2013; Jan 1, 2014; etc.)
+    * @param vQuakeTimeInMillisecs is the date of quake (e.g. Feb 2, 2013; Jan 1, 2014; etc.)
     * */
-    public Quake(String vQuakeMagnitude, String vQuakeLocation, String vQuakeDate){
+    public Quake(String vQuakeMagnitude, String vQuakeLocation, long vQuakeTimeInMillisecs){
         mQuakeMagnitude = vQuakeMagnitude;
         mQuakeLocation = vQuakeLocation;
-        mQuakeDate = vQuakeDate;
+        mQuakeTimeInMillisecs = vQuakeTimeInMillisecs;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Quake {
      * Get the quake location
      * @return mQuakeLocation
      */
-    public String getmQuakeLocation() {
+    public String getQuakeLocation() {
         return mQuakeLocation;
     }
 
@@ -66,7 +66,7 @@ public class Quake {
      * Get the quake date
      * @return mQuakeDate
      */
-    public String getmQuakeDate() {
-        return mQuakeDate;
+    public long getQuakeTimeInMillisecs() {
+        return mQuakeTimeInMillisecs;
     }
 }

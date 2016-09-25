@@ -23,7 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by witwiki on 9/5/2016.
@@ -81,17 +83,51 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         TextView locTextView = (TextView) listItemView.findViewById(R.id.quake_location);
         // Get the quake location from the current Quake object and
         // set this text on the loc TextView
-        locTextView.setText(currentQuake.getmQuakeLocation());
+        locTextView.setText(currentQuake.getQuakeLocation());
+
+        // Create a new Date object from the time in milliseconds of the earthquake
+        Date dateObject = new Date(currentQuake.getQuakeTimeInMillisecs());
 
         // Find the TextView in the list_items.xml layout with the ID quake_date
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.quake_date);
-        // Get the quake date from the current Quake object and
-        // set the text to dateTextView
-        dateTextView.setText(currentQuake.getmQuakeDate());
+        // Format the date string (i.e. "Mar 3, 1984")
+        String formattedDate = formatDate(dateObject);
+        // Display the date of the current earthquake in that TextView
+        dateTextView.setText(formattedDate);
+
+        // Find the TextView with view ID time
+        TextView timeTextView = (TextView) listItemView.findViewById(R.id.quake_time);
+        // Format the time string (i.e. "4:30PM")
+        String formattedTime = formatTime(dateObject);
+        // Display the time of the current earthquake in that TextView
+        timeTextView.setText(formattedTime);
 
         // Return the whole list item layout (containing 3 TextViews)
         // so that it can be shown in the ListView
         return listItemView;
+
+    }
+
+    /**
+     * Helper method to return the formatted date string (i.e. "Mar 4, 2019") from a
+     * Date Object (created from a long data type in milliseconds - UNIX time)
+     * @param dateObject is the Date Object input argument
+     * @return is the formatted date string
+     */
+    private String formatDate(Date dateObject){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
+        return dateFormat.format(dateObject);
+    }
+
+    /**
+     * Helper method to return the formatted time string (i.e. "5:30 PM") from a
+     * Date Object (created from a long data type in milliseconds - UNIX time)
+     * @param dateObject is the Date Object input argument
+     * @return is the formatted time string
+     */
+    private String formatTime(Date dateObject){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(dateObject);
     }
 
 

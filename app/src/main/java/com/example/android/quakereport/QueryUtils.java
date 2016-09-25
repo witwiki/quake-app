@@ -74,7 +74,7 @@ public final class QueryUtils {
                 String place = propertiesJsonObject.optString("place").toString();
 
                 //  Extract “time” for time
-                String time = propertiesJsonObject.optString("time").toString();
+                long time = propertiesJsonObject.getLong("time");
 
                 //  Create Earthquake java object from magnitude, location, and time
                 Quake quakeObject = new Quake(mag, place, time);
