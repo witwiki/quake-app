@@ -68,7 +68,7 @@ public final class QueryUtils {
                 JSONObject propertiesJsonObject = jsonObject.optJSONObject("properties");
 
                 //  Extract “mag” for magnitude
-                String mag = propertiesJsonObject.optString("mag").toString();
+                double mag = propertiesJsonObject.getDouble("mag");
 
                 //  Extract “place” for location
                 String place = propertiesJsonObject.optString("place").toString();

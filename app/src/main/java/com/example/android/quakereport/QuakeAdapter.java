@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,7 +95,9 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         TextView magTextView = (TextView) listItemView.findViewById(R.id.quake_magnitude);
         // Get the quake magnitude from the current Quake object and
         // set this text on the mag TextView
-        magTextView.setText(currentQuake.getQuakeMagnitude());
+        String formattedMag = formatMag(currentQuake.getQuakeMagnitude());
+        //  Display formatted magnitude
+        magTextView.setText(formattedMag);
 
         // Find the TextView in the list_items.xml layout with the ID quake_location
         TextView locOffTextView = (TextView) listItemView.findViewById(R.id.location_offset);
@@ -155,15 +158,13 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         return timeFormat.format(dateObject);
     }
 
-/**    private String strManipulate(String someStr) {
-        if (someStr.contains("of")) {
-            String[] locText = someStr.split("of");
-        } else {
-            String addNear = "Near the";
-
-        }
+    /**
+     * Helper method that converts a double data type {@link Quake} object into {@link String}
+     * while changing the decimal format.
+      */
+    private String formatMag(double mag){
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+        return decimalFormat.format(mag);
     }
-*/
-
 
 }

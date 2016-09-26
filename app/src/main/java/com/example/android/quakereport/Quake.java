@@ -25,7 +25,7 @@ package com.example.android.quakereport;
 public class Quake {
 
     // Quake magnitude on the Richter scale (e.g. 4.2, 4.4, 7.2, etc.)
-    private String mQuakeMagnitude;
+    private double mQuakeMagnitude;
 
     // Place of quake (e.g. San Francisco, Auckland, etc.)
     private String mQuakeLocation;
@@ -40,7 +40,7 @@ public class Quake {
     * @param vQuakeLocation is the place of quake (e.g. San Francisco, Auckland, etc.)
     * @param vQuakeTimeInMillisecs is the date of quake (e.g. Feb 2, 2013; Jan 1, 2014; etc.)
     * */
-    public Quake(String vQuakeMagnitude, String vQuakeLocation, long vQuakeTimeInMillisecs){
+    public Quake(double vQuakeMagnitude, String vQuakeLocation, long vQuakeTimeInMillisecs){
         mQuakeMagnitude = vQuakeMagnitude;
         mQuakeLocation = vQuakeLocation;
         mQuakeTimeInMillisecs = vQuakeTimeInMillisecs;
@@ -50,7 +50,7 @@ public class Quake {
      * Get the quake magnitude
      * @return mQuakeMagnitude
      */
-    public String getQuakeMagnitude(){
+    public double getQuakeMagnitude(){
         return mQuakeMagnitude;
     }
 
