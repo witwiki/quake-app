@@ -36,6 +36,8 @@ import java.util.Date;
  */
 public class QuakeAdapter extends ArrayAdapter<Quake> {
 
+    private static final String LOCATION_SEPARATOR = "of";
+
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
      * The context is used to inflate the layout file, and the list is the data we want
@@ -73,6 +75,21 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         // Get the {@link Quake} object located at this position in the list
         Quake currentQuake = getItem(position);
 
+        /**
+         * Str Manipulation
+         */
+        String originalLoc = currentQuake.getQuakeLocation();
+        String primaryLoc;
+        String locationOffset;
+        if (originalLoc.contains(LOCATION_SEPARATOR)){
+            String[] parts = originalLoc.split(LOCATION_SEPARATOR);
+            locationOffset = parts[0] + LOCATION_SEPARATOR;
+            primaryLoc = parts[1];
+        } else {
+            locationOffset = getContext().getString(R.string.near_the);
+            primaryLoc = originalLoc;
+        }
+
         // Find the TextView in the list_items.xml layout with the ID quake_magnitude
         TextView magTextView = (TextView) listItemView.findViewById(R.id.quake_magnitude);
         // Get the quake magnitude from the current Quake object and
@@ -80,10 +97,16 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         magTextView.setText(currentQuake.getQuakeMagnitude());
 
         // Find the TextView in the list_items.xml layout with the ID quake_location
+        TextView locOffTextView = (TextView) listItemView.findViewById(R.id.location_offset);
+        // Get the quake location from the current Quake object and
+        // set this text on the loc TextView
+        locOffTextView.setText(locationOffset);
+
+        // Find the TextView in the list_items.xml layout with the ID quake_location
         TextView locTextView = (TextView) listItemView.findViewById(R.id.quake_location);
         // Get the quake location from the current Quake object and
         // set this text on the loc TextView
-        locTextView.setText(currentQuake.getQuakeLocation());
+        locTextView.setText(primaryLoc);
 
         // Create a new Date object from the time in milliseconds of the earthquake
         Date dateObject = new Date(currentQuake.getQuakeTimeInMillisecs());
@@ -105,6 +128,8 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         // Return the whole list item layout (containing 3 TextViews)
         // so that it can be shown in the ListView
         return listItemView;
+
+
 
     }
 
@@ -129,6 +154,16 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
         return timeFormat.format(dateObject);
     }
+
+/**    private String strManipulate(String someStr) {
+        if (someStr.contains("of")) {
+            String[] locText = someStr.split("of");
+        } else {
+            String addNear = "Near the";
+
+        }
+    }
+*/
 
 
 }
