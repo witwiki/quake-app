@@ -16,6 +16,8 @@
 package com.example.android.quakereport;
 
 import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,10 +46,10 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
      * The context is used to inflate the layout file, and the list is the data we want
      * to populate into the lists.
      *
-     * @param context        The current context. Used to inflate the layout file.
-     * @param quakes         A List of Quake objects to display in a list
+     * @param context The current context. Used to inflate the layout file.
+     * @param quakes  A List of Quake objects to display in a list
      */
-    public QuakeAdapter(Activity context, ArrayList<Quake> quakes){
+    public QuakeAdapter(Activity context, ArrayList<Quake> quakes) {
         // We initialize the ArrayAdapter's internal storage for the context and the list.
         // The second argument is used when the ArrayAdapter is populating a single TextView.
         // Because this is a custom adapter for three TextViews, the adapter is not
@@ -58,17 +60,17 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
     /**
      * Provides a view for an AdapterView (ListView, GridView, etc.)
      *
-     * @param position The position in the list of data that should be displayed in the
-     *                 list item view.
+     * @param position    The position in the list of data that should be displayed in the
+     *                    list item view.
      * @param convertView The recycled view to populate.
-     * @param parent The parent ViewGroup that is used for inflation.
+     * @param parent      The parent ViewGroup that is used for inflation.
      * @return The View for the position in the AdapterView.
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if the existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_items, parent, false);
         }
@@ -82,7 +84,7 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         String originalLoc = currentQuake.getQuakeLocation();
         String primaryLoc;
         String locationOffset;
-        if (originalLoc.contains(LOCATION_SEPARATOR)){
+        if (originalLoc.contains(LOCATION_SEPARATOR)) {
             String[] parts = originalLoc.split(LOCATION_SEPARATOR);
             locationOffset = parts[0] + LOCATION_SEPARATOR;
             primaryLoc = parts[1];
@@ -92,12 +94,22 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         }
 
         // Find the TextView in the list_items.xml layout with the ID quake_magnitude
-        TextView magTextView = (TextView) listItemView.findViewById(R.id.quake_magnitude);
         // Get the quake magnitude from the current Quake object and
+        TextView magTextView = (TextView) listItemView.findViewById(R.id.quake_magnitude);
         // set this text on the mag TextView
         String formattedMag = formatMag(currentQuake.getQuakeMagnitude());
         //  Display formatted magnitude
         magTextView.setText(formattedMag);
+
+        //  Set background color on the magnitude circle.
+        //  Get background from TextView - a GradientDrawable object
+        GradientDrawable magCircle = (GradientDrawable) magTextView.getBackground();
+
+        //  Get quake background color based on current quake magnitude
+        int magColour = getMagnitudeColour(currentQuake.getQuakeMagnitude());
+
+        //  Set magnitude colour on the circle
+        magCircle.setColor(magColour);
 
         // Find the TextView in the list_items.xml layout with the ID quake_location
         TextView locOffTextView = (TextView) listItemView.findViewById(R.id.location_offset);
@@ -133,16 +145,16 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         return listItemView;
 
 
-
     }
 
     /**
      * Helper method to return the formatted date string (i.e. "Mar 4, 2019") from a
      * Date Object (created from a long data type in milliseconds - UNIX time)
+     *
      * @param dateObject is the Date Object input argument
      * @return is the formatted date string
      */
-    private String formatDate(Date dateObject){
+    private String formatDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
         return dateFormat.format(dateObject);
     }
@@ -150,10 +162,11 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
     /**
      * Helper method to return the formatted time string (i.e. "5:30 PM") from a
      * Date Object (created from a long data type in milliseconds - UNIX time)
+     *
      * @param dateObject is the Date Object input argument
      * @return is the formatted time string
      */
-    private String formatTime(Date dateObject){
+    private String formatTime(Date dateObject) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
         return timeFormat.format(dateObject);
     }
@@ -161,10 +174,48 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
     /**
      * Helper method that converts a double data type {@link Quake} object into {@link String}
      * while changing the decimal format.
-      */
-    private String formatMag(double mag){
+     */
+    private String formatMag(double mag) {
         DecimalFormat decimalFormat = new DecimalFormat("0.0");
         return decimalFormat.format(mag);
     }
 
+    private int getMagnitudeColour(double magnitude) {
+        int magColourResourceId;
+        int magFloor = (int) Math.floor(magnitude);
+        switch (magFloor) {
+            case 0:
+            case 1:
+                magColourResourceId = R.color.magnitude1;
+                break;
+            case 2:
+                magColourResourceId = R.color.magnitude2;
+                break;
+            case 3:
+                magColourResourceId = R.color.magnitude3;
+                break;
+            case 4:
+                magColourResourceId = R.color.magnitude4;
+                break;
+            case 5:
+                magColourResourceId = R.color.magnitude5;
+                break;
+            case 6:
+                magColourResourceId = R.color.magnitude6;
+                break;
+            case 7:
+                magColourResourceId = R.color.magnitude7;
+                break;
+            case 8:
+                magColourResourceId = R.color.magnitude8;
+                break;
+            case 9:
+                magColourResourceId = R.color.magnitude9;
+                break;
+            default:
+                magColourResourceId = R.color.magnitude10plus;
+                break;
+        }
+        return ContextCompat.getColor(getContext(), magColourResourceId);
+    }
 }
